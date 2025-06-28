@@ -1,0 +1,27 @@
+name: Keep Supabase Projects Awake
+
+on:
+  schedule:
+    - cron: '0 5 * * 1'     # Monday 05:00 UTC
+    - cron: '0 5 * * 4'     # Thursday 05:00 UTC
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - run: npm install
+
+      - name: Run keepalive script
+        run: npm start
+        env:
+          DSF_SUPABASE_KEY: ${{ secrets.DSF_SUPABASE_KEY }}
+          DEDDIT_SUPABASE_KEY: ${{ secrets.DEDDIT_SUPABASE_KEY }}
+
